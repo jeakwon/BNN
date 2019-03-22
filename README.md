@@ -1,2 +1,2 @@
-# BNN
+# bnn
 Brain Neural Network
