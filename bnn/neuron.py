@@ -7,13 +7,19 @@ class Neuron:
         self.ID         = ID
         self.presyns    = self._get_pre_synapses()
         self.postsyns   = self._get_post_synapses()
+        self.threshold  = 0
 
     @property
     def activity(self):
         if self.layer is self.nn.input_layer:
-            return self.nn.X[self.ID]
+            PSP = self.nn.X[self.ID]
         else:
-            return self.layer.upper.activities.sum()
+            PSP = self.layer.upper.activities.sum()
+
+        if PSP > self.threshold:
+            return PSP-self.threshold
+        else:
+            return 0
 
     def presyn(self, ID):
         try:

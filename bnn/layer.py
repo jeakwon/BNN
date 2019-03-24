@@ -11,25 +11,33 @@ class Layer:
     def neuron(self,ID):
         return self.neurons[ID]
 
+    @property
+    def activities(self):
+        return self._get_activities()
+
+    @property
+    def upper(self):
+        return self._get_upper_layer()
+
+    @property
+    def lower(self):
+        return self._get_lower_layer()
+
+    @property
+    def info(self):
+        return 'nn:{}, this:{}'.format(self.nn, self)
+
     def _get_neurons(self):
         neurons = dict()
         for n in range(self.n_neurons):
             neurons[n] = Neuron(nn=self.nn, layer=self,ID=n)
         return neurons
 
-    @property
-    def activities(self):
-        return self._get_activities()
-
     def _get_activities(self):
         activities = []
         for n in range(self.n_neurons):
             activities.append(self.neuron(n).activity)
         return np.array(activities)
-
-    @property
-    def upper(self):
-        return self._get_upper_layer()
 
     def _get_upper_layer(self):
         current_layer_ID = self.ID
@@ -38,20 +46,12 @@ class Layer:
         upper_layer_ID = self.ID - 1 
         return self.nn.layer(upper_layer_ID)
 
-    @property
-    def lower(self):
-        return self._get_lower_layer()
-
     def _get_lower_layer(self):
         current_layer_ID = self.ID
         if current_layer_ID is self.nn.output_layer_ID:
             return None
         lower_layer_ID = self.ID + 1
         return self.nn.layer(lower_layer_ID)
-
-    @property
-    def info(self):
-        return 'nn:{}, this:{}'.format(self.nn, self)
 
     def __str__(self):
         return 'Layer({})'.format(self.ID)
