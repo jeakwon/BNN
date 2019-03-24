@@ -15,6 +15,10 @@ class Neuron:
             PSP = self.nn.X[self.ID]
         else:
             PSP = self.layer.upper.activities.sum()
+            # 여기서 PSP를 프리 포스트 시냅스 고려해서 만들어야함
+            # 시냅스에서 partner를 직접 구할 수 있으니까, partner 소속 뉴런을 구해서 activity를 구하면?
+            # single upper neuron activity = postsyn * presyn (=postsyn.partner) * activity (=presyn.neuron.activity)
+            # for neuron in upper_neurons: sum(single upper neuron activity)
 
         if PSP > self.threshold:
             return PSP-self.threshold

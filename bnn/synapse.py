@@ -33,6 +33,7 @@ class PostSynapse:
         self.layer  = layer
         self.neuron = neuron
         self.ID     = ID
+        self.receptor = 1
 
     @property
     def info(self):
