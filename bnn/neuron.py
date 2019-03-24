@@ -8,6 +8,13 @@ class Neuron:
         self.presyns    = self._get_pre_synapses()
         self.postsyns   = self._get_post_synapses()
 
+    @property
+    def activity(self):
+        if self.layer is self.nn.input_layer:
+            return self.nn.X[self.ID]
+        else:
+            return self.layer.upper.activities.sum()
+
     def presyn(self, ID):
         try:
             return self.presyns[ID]

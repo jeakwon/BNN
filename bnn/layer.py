@@ -1,3 +1,4 @@
+import numpy as np
 from neuron import Neuron
 
 class Layer:
@@ -15,6 +16,16 @@ class Layer:
         for n in range(self.n_neurons):
             neurons[n] = Neuron(nn=self.nn, layer=self,ID=n)
         return neurons
+
+    @property
+    def activities(self):
+        return self._get_activities()
+
+    def _get_activities(self):
+        activities = []
+        for n in range(self.n_neurons):
+            activities.append(self.neuron(n).activity)
+        return np.array(activities)
 
     @property
     def upper(self):

@@ -1,7 +1,8 @@
+import numpy as np
 from layer import Layer
 
 class NN:
-    def __init__(self,*neurons:int):
+    def __init__(self, *neurons:int):
         """
             ::
 
@@ -11,6 +12,21 @@ class NN:
         """
         self.struct = neurons
         self.layers = self._get_layers()
+    
+    def feed(self,X):
+        self.X = self._input_validation(X)
+        # ...
+        y = self.output_layer.activities
+        return y
+    
+    def _input_validation(self, X):
+        if not isinstance(X, np.ndarray):
+            raise TypeError('X must be numpy array')
+        if X.ndim >1:
+            raise ValueError('X must be 1 dimensional array')
+        if X.shape[0] is not self.input_layer.n_neurons:
+            raise ValueError('X array size must be same with input layer')
+        return X
 
     def _get_layers(self):
         layers = dict()
