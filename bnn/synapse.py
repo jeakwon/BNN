@@ -1,9 +1,10 @@
 class PreSynapse:
     def __init__(self, nn=None, layer=None, neuron=None, ID=None):
-        self.nn     = nn
-        self.layer  = layer
-        self.neuron = neuron
-        self.ID     = ID
+        self.nn         = nn
+        self.layer      = layer
+        self.neuron     = neuron
+        self.ID         = ID
+        self.ligands    = 1
 
     @property
     def info(self):
@@ -17,7 +18,7 @@ class PreSynapse:
     def _get_partner(self):
         neuron_id = self.ID
         postsyn_id = self.neuron.ID
-        partner = self.layer.upper.neuron(neuron_id).postsyn(postsyn_id)
+        partner = self.layer.lower.neuron(neuron_id).postsyn(postsyn_id)
         return partner
 
     def __str__(self):
@@ -29,11 +30,11 @@ class PreSynapse:
 
 class PostSynapse:
     def __init__(self, nn=None, layer=None, neuron=None, ID=None):
-        self.nn     = nn
-        self.layer  = layer
-        self.neuron = neuron
-        self.ID     = ID
-        self.receptor = 1
+        self.nn         = nn
+        self.layer      = layer
+        self.neuron     = neuron
+        self.ID         = ID
+        self.receptors  = 1
 
     @property
     def info(self):
@@ -47,7 +48,7 @@ class PostSynapse:
     def _get_partner(self):
         neuron_id = self.ID
         presyn_id = self.neuron.ID
-        partner = self.layer.lower.neuron(neuron_id).presyn(presyn_id)
+        partner = self.layer.upper.neuron(neuron_id).presyn(presyn_id)
         return partner
 
     def __str__(self):

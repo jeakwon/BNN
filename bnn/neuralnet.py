@@ -14,20 +14,60 @@ class NN:
         self.layers = self._get_layers()
         self.n_layers = len(neurons)
     
-    def feed(self,X):
+    def feed(self, X, depress=True):
         self.X = self._input_validation(X)
-        # ...
-        y = self.output_layer.activities
-        return y
+        self.y = self.output_layer.activities
+        if depress: 
+            for _, layer in self.layers.items():
+                for _, neuron in layer.neurons.items():
+                    neuron.depress()
+        return self
     
     def layer(self,ID):
         return self.layers[ID]
+
+    @property
+    def neurons(self):
+        neurons = dict()
+        for layer_ID, layer in self.layers.items():
+            for neuron_ID, neuron in layer.neurons.items():
+                key = 'L{}N{}'.format(layer_ID, neuron_ID)
+                neurons[key] = neuron
+        return neurons
+    
+    @property
+    def presyns(self):
+        presyns = dict()
+        for neuron_ID, neuron in self.neurons.items():
+            if neuron.presyns is not None:
+                for presyn_ID, presyn in neuron.presyns.items():
+                    key = '{}Pr{}'.format(neuron_ID, presyn_ID)
+                    presyns[key] = presyn
+        return presyns
+
+    @property
+    def postsyns(self):
+        postsyns = dict()
+        for neuron_ID, neuron in self.neurons.items():
+            if neuron.postsyns is not None:
+                for postsyns_ID, postsyn in neuron.postsyns.items():
+                    key = '{}Po{}'.format(neuron_ID, postsyns_ID)
+                    postsyns[key] = postsyn
+        return postsyns
+
+    @property
+    def ligands(self):
+        return {k: presyn.ligands for k, presyn in self.presyns.items()}
+
+    @property
+    def receptors(self):
+        return {k: postsyn.receptors for k, postsyn in self.postsyns.items()}
     
     @property
     def activities(self):
         activities = dict()
         for n in range(self.n_layers):
-            activities[n]= self.layer(n).activities
+            activities[n] = self.layer(n).activities
         return activities
 
     @property
