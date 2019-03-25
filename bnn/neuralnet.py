@@ -13,10 +13,17 @@ class NN:
         self.struct = neurons
         self.layers = self._get_layers()
         self.n_layers = len(neurons)
+
+    def train(self, X, y, depress=True):
+        self.X = self._input_validation(X)
+        self.y = self._output_validation(y)
+        self.y_pred = self.output_layer.activities
+        self.y_delta = self.y-self.y_pred
+        
     
     def feed(self, X, depress=True):
         self.X = self._input_validation(X)
-        self.y = self.output_layer.activities
+        self.y_pred = self.output_layer.activities
         if depress: 
             for _, layer in self.layers.items():
                 for _, neuron in layer.neurons.items():
@@ -98,6 +105,15 @@ class NN:
         if X.shape[0] is not self.input_layer.n_neurons:
             raise ValueError('X array size must be same with input layer')
         return X
+
+    def _output_validation(self, y):
+        if not isinstance(y, np.ndarray):
+            raise TypeError('y must be numpy array')
+        if y.ndim >1:
+            raise ValueError('y must be 1 dimensional array')
+        if y.shape[0] is not self.output_layer.n_neurons:
+            raise ValueError('y array size must be same with output layer')
+        return y
 
     def _get_layers(self):
         layers = dict()
