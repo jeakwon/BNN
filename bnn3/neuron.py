@@ -1,13 +1,12 @@
 from synapse import Synapse
 class Neuron:
-    def __init__(self, nn=None, layer=None,ID=None):
+    def __init__(self, nn=None, layer=None, ID=None):
         self.nn         = nn
         self.layer      = layer
         self.ID         = ID
 
     def project(self, to):
         return Synapse(self,to)
-
 
     @property
     def upper_neurons(self):

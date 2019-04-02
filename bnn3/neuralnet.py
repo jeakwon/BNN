@@ -10,10 +10,11 @@ class NN:
             nn.layer(1)
     """
     def __init__(self, *neurons:int):
-        self.shape = neurons
-        self.layers = self._get_layers()
-        self.input_layer_ID = 0
-        self.output_layer_ID = len(neurons)-1
+        self.shape              = neurons
+        self.input_layer_ID     = 0
+        self.output_layer_ID    = len(neurons)-1
+        self.layers             = self._get_layers()
+        self.synapses           = self._get_synapses()
 
     def layer(self,ID):
         return self.layers[ID]
@@ -24,13 +25,17 @@ class NN:
             layers.append(Layer(nn=self, ID=layer_id, n_neurons=n_neurons))
         return layers
 
-    def _get_synapses(self):
+    def synapse(self, ID):
+        for synapse in self.synapses:
+            if synapse.ID == ID:
+                return synapse
+
+    def _get_synapeses(self):
         synapses = list()
         for layer in self.layers:
             for neuron in layer.neurons:
-                
-                print(neuron)
-                print(neuron.lower_neurons)
+                for lower_neuron in neuron.lower_neurons:
+                    synapses.append(neuron.project(lower_neuron))
         return synapses
 
     def __str__(self):
